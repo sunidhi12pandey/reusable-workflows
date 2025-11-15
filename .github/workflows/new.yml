@@ -1,0 +1,23 @@
+name: Reusable Workflow Caller
+
+on:
+  workflow_dispatch:
+    inputs:
+      node:
+        required: true
+        type: string
+
+jobs:
+  build:
+    uses: ./.github/workflows/reusable-workflow.yml
+    with:
+      node: ${{ github.event.inputs.node }}
+
+  after-build:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: hey man
+        run: |
+          sudo apt update
+          sudo apt install nginx -y
